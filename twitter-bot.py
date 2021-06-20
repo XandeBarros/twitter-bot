@@ -1,5 +1,5 @@
 import tweepy
-import logging
+# import logging
 import time
 import multiprocessing
 from config import create_api
@@ -9,30 +9,30 @@ from data import date
 HALF_DAY = 43200
 FIVE_MINUTES = 300
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger()
 
 def postTweet(api, text):
   while True:
-    logger.info("Posting...")
+    print("Posting...")
     api.update_status(text)
-    logger.info("Posted ;)") 
+    print("Posted ;)") 
     time.sleep(HALF_DAY)
 
 def likeEveryNewTweet(api, user):
   while True:
-    logger.info("Searching new tweets...")
+    print("Searching new tweets...")
     tweets = api.user_timeline(user, exclude_replies=True)
 
     for status in tweets:
       if not status.favorited:
         try:
           api.create_favorite(status.id)
-          logger.info("Favorited")
+          print("Favorited")
         except Exception as e:
-          logger.error("Error on fav", exc_info=True)
+          print("Error on fav")
       time.sleep(FIVE_MINUTES)
-      logger.info("Wainting")
+      print("Wainting")
 
 def main():
   api = create_api()
