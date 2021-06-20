@@ -9,3 +9,7 @@ venv
 #Cache
 
 __pycache__
+
+#Testing features
+
+test.py
