@@ -2,10 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import tweepy
-# import logging
 import os
-
-# logger = logging.getLogger()
 
 def create_api():
   '''Credentials'''
