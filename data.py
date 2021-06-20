@@ -1,6 +1,6 @@
 import datetime
 
-def date():
+def get_date():
   dt = datetime.datetime.today()
   
   day = dt.day
