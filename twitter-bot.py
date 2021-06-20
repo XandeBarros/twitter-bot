@@ -25,8 +25,12 @@ def likeEveryNewTweet(api, user):
     tweets = api.user_timeline(user, exclude_replies=True)
 
     for status in tweets:
-      api.create_favorite(status.id)
-      logger.info("Favorited")
+      if not status.favorited:
+        try:
+          api.create_favorite(status.id)
+          logger.info("Favorited")
+        except Exception as e:
+          logger.error("Error on fav", exc_info=True)
       time.sleep(FIVE_MINUTES)
       logger.info("Wainting")
 
