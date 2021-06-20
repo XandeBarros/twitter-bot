@@ -5,3 +5,7 @@
 #Modules
 
 venv
+
+#Cache
+
+__pycache__
