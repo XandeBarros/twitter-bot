@@ -18,9 +18,9 @@ def likeTweets(api, user):
     if not status.favorited:
       try:
         api.create_favorite(status.id)
-        print("Favorited")
+        print(f"Favorited (@{user})")
       except Exception as e:
-        print("Error on fav")
+        print(f"Error on fav(@{user})")
     else:
       continue
     time.sleep(THIRTY_SECONDS)
