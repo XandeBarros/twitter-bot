@@ -73,9 +73,11 @@ def trovsNewReply(api):
     timeline = api.user_timeline(user.id_str)
 
     for status in timeline:
+      text = f"@{user.screen_name} É sobre isso!!!"
+
       try:
         if status.in_reply_to_screen_name == "botdoxande" or status.in_reply_to_screen_name == "XDessau":
-          api.update_status(f"@{user.screen_name} É sobre isso!!!", status.id_str)
+          api.update_status(text, status.id_str)
           print("Posted to Trovs sz ;)")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
@@ -89,12 +91,14 @@ def crovsNewReplay(api):
     user = "972941310905774081"
     user = api.get_user(user)
 
-    timeline = api.user_timeline(user.id_str)
+    timeline = api.user_timeline(user.id_str, exclude_replies=True)
     answers = ["vdd linda concordo", "estamos num total de zero dias sem falar bosta, nosso recorde é de zero dias", "verdade concordo, falou tudo, essa noite você não passa frio, pois tá coberto de razão", "falou muito e falou bosta, namoral..."]
 
     for status in timeline:
+      text = f"@{user.screen_name} {random.choice(answers)}"
+
       try:
-        api.update_status(f"@{user.screen_name} {random.choice(answers)}", status.id_str)
+        api.update_status(text, status.id_str)
         print("Posted to Crovs sz")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
