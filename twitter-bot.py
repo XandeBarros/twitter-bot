@@ -41,7 +41,7 @@ def postTweet(api):
     date = get_date()
     phrases = get_phrases()
         
-    phrase = random.choices(phrases)
+    phrase = random.choice(phrases)
 
     posting(api, weather, date, phrase)
     time.sleep(HALF_DAY)
@@ -86,7 +86,7 @@ def crovsNewReplay(api):
     answers = ["vdd linda concordo", "estamos num total de zero dias sem falar bosta, nosso recorde é de zero dias", "verdade concordo, falou tudo, essa noite você não passa frio, pois tá coberto de razão", "falou muito e falou bosta, namoral..."]
 
     for status in timeline:
-      api.update_status(random.choices(answers), status.id_str)
+      api.update_status(random.choice(answers), status.id_str)
       time.sleep(THIRTY_SECONDS)
 
     time.sleep(FIVE_MINUTES)
@@ -112,13 +112,19 @@ def main():
   p1 = multiprocessing.Process(target=postTweet, args=[api])
   p2 = multiprocessing.Process(target=likeEveryNewTweet, args=[api, user])
   p3 = multiprocessing.Process(target=followFollowers, args=[api])
+  p4 = multiprocessing.Process(target=trovsNewReply, args=[api])
+  p5 = multiprocessing.Process(target=crovsNewReplay, args=[api])
   
   p1.start()
   p2.start()
   p3.start()
+  p4.start()
+  p5.start()
   p1.join()
   p2.join()
   p3.join()
+  p4.join()
+  p5.join()
     
 if __name__ == "__main__":
   main()
