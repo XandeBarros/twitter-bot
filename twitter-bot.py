@@ -96,9 +96,10 @@ def crovsNewReplay(api):
 
     for status in timeline:
       text = f"@{user.screen_name} {random.choice(answers)}"
+      idToReply = status.id
 
       try:
-        api.update_status(text, status.id_str)
+        api.update_status(text, idToReply)
         print("Posted to Crovs sz")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
