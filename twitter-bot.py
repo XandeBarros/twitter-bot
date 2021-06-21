@@ -1,6 +1,7 @@
 import tweepy
 import time
 import multiprocessing
+import random
 from config import create_api
 from weather import get_weather
 from data import get_date
@@ -10,43 +11,40 @@ HALF_DAY = 43200
 FIVE_MINUTES = 300
 THIRTY_SECONDS = 30
 
+def posting(api, weather, date, phrase):
+  text = f"{weather} {date} {phrase}"
+
+  if not len(text) > 280:
+    print("Posting...")
+    try:
+      api.update_status(text)
+      print("Posted ;)") 
+    except Exception as e:
+      print("Error on tweet")
+      raise e
+  else:
+    text = f"{weather} {date}"
+    reply = f"{phrase}"
+    try:
+      api.update_status(text)
+      me = api.me().id
+      last_tweet_id = api.user_timeline(me, count=1)[0].id
+      api.update_status(reply, last_tweet_id)
+      print("Posted and Replied ;)") 
+    except Exception as e:
+      print("Error on tweet")
+      raise e
+
 def postTweet(api):
   while True:
     weather = get_weather()
     date = get_date()
     phrases = get_phrases()
-    aux = 0
-    
-    if aux > len(phrases):
-      aux = 0
+        
+    phrase = random.choices(phrases)
 
-    phrase = phrases[aux]
-
-    text = f"{weather} {date} {phrase}"
-
-    if not len(text) > 280:
-      print("Posting...")
-      try:
-        api.update_status(text)
-        print("Posted ;)") 
-      except Exception as e:
-        print("Error on tweet")
-        raise e
-      time.sleep(HALF_DAY)
-    else:
-      text = f"{weather} {date}"
-      reply = f"{phrase}"
-      try:
-        api.update_status(text)
-        me = api.me().id
-        last_tweet_id = api.user_timeline(me, count=1)[0].id
-        api.update_status(reply, last_tweet_id)
-        print("Posted and Replied ;)") 
-      except Exception as e:
-        print("Error on tweet")
-        raise e
-      time.sleep(HALF_DAY)
-    aux += 1  
+    posting(api, weather, date, phrase)
+    time.sleep(HALF_DAY)
 
 def likeEveryNewTweet(api, user):
   while True:
@@ -67,6 +65,32 @@ def likeEveryNewTweet(api, user):
 
     time.sleep(FIVE_MINUTES)
 
+def trovsNewReply(api):
+  while True:
+    user = "916465001468170242"
+
+    timeline = api.user_timeline(user)
+
+    for status in timeline:
+      if status.in_reply_to_screen_name == "botdoxande" or status.in_reply_to_screen_name == "XDessau":
+        api.update_status("É sobre isso!!!", status.id_str)
+        print("Posted to Trovs sz ;)")
+      time.sleep(THIRTY_SECONDS)
+    
+    time.sleep(FIVE_MINUTES)
+
+def crovsNewReplay(api):
+  while True:
+    user = "972941310905774081"
+    timeline = api.user_timeline(user)
+    answers = ["vdd linda concordo", "estamos num total de zero dias sem falar bosta, nosso recorde é de zero dias", "verdade concordo, falou tudo, essa noite você não passa frio, pois tá coberto de razão", "falou muito e falou bosta, namoral..."]
+
+    for status in timeline:
+      api.update_status(random.choices(answers), status.id_str)
+      time.sleep(THIRTY_SECONDS)
+
+    time.sleep(FIVE_MINUTES)
+
 def followFollowers(api):
   while True:
     followers = tweepy.Cursor(api.followers).items()
@@ -80,7 +104,7 @@ def followFollowers(api):
           pass
       time.sleep(THIRTY_SECONDS)
     time.sleep(FIVE_MINUTES)
-
+  
 def main():
   api = create_api()
   user = "XDessau"
