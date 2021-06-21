@@ -11,6 +11,23 @@ HALF_DAY = 43200
 FIVE_MINUTES = 300
 THIRTY_SECONDS = 30
 
+def likeTweets(api, user):
+  tweets = api.user_timeline(user, exclude_replies=True)
+
+  for status in tweets:
+    if not status.favorited:
+      try:
+        api.create_favorite(status.id)
+        print("Favorited")
+      except Exception as e:
+        print("Error on fav")
+    else:
+      continue
+    time.sleep(THIRTY_SECONDS)
+    print("Waiting")
+
+  time.sleep(FIVE_MINUTES)
+
 def posting(api, weather, date, phrase):
   text = f"{weather} {date} {phrase}"
 
@@ -46,22 +63,15 @@ def postTweet(api):
     posting(api, weather, date, phrase)
     time.sleep(HALF_DAY)
 
-def likeEveryNewTweet(api, user):
+def likeEveryNewTweet(api):
+  userXande = "XDessau"
+  userJuju = "juoliveira12_"
+  
   while True:
     print("Searching new tweets...")
-    tweets = api.user_timeline(user, exclude_replies=True)
-
-    for status in tweets:
-      if not status.favorited:
-        try:
-          api.create_favorite(status.id)
-          print("Favorited")
-        except Exception as e:
-          print("Error on fav")
-      else:
-        continue
-      time.sleep(THIRTY_SECONDS)
-      print("Waiting")
+    
+    likeTweets(api, userJuju)
+    likeTweets(api, userXande)
 
     time.sleep(FIVE_MINUTES)
 
@@ -121,10 +131,9 @@ def followFollowers(api):
   
 def main():
   api = create_api()
-  user = "XDessau"
 
   p1 = multiprocessing.Process(target=postTweet, args=[api])
-  p2 = multiprocessing.Process(target=likeEveryNewTweet, args=[api, user])
+  p2 = multiprocessing.Process(target=likeEveryNewTweet, args=[api])
   p3 = multiprocessing.Process(target=followFollowers, args=[api])
   p4 = multiprocessing.Process(target=trovsNewReply, args=[api])
   p5 = multiprocessing.Process(target=crovsNewReplay, args=[api])
