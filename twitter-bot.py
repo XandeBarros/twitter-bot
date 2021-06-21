@@ -70,14 +70,14 @@ def trovsNewReply(api):
     user = "916465001468170242"
     user = api.get_user(user)
 
-    timeline = api.user_timeline(user.id_str)
+    mentions = api.mentions_timeline()
 
-    for status in timeline:
+    for mention in mentions:
       text = f"@{user.screen_name} É sobre isso!!!"
 
       try:
-        if status.in_reply_to_screen_name == "botdoxande" or status.in_reply_to_screen_name == "XDessau":
-          api.update_status(text, status.id_str)
+        if mention.user.screen_name == user.screen_name:
+          api.update_status(text, mention.id)
           print("Posted to Trovs sz ;)")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
@@ -91,16 +91,17 @@ def crovsNewReplay(api):
     user = "972941310905774081"
     user = api.get_user(user)
 
-    timeline = api.user_timeline(user.id_str, exclude_replies=True)
+    mentions = api.mentions_timeline()
     answers = ["vdd linda concordo", "estamos num total de zero dias sem falar bosta, nosso recorde é de zero dias", "verdade concordo, falou tudo, essa noite você não passa frio, pois tá coberto de razão", "falou muito e falou bosta, namoral..."]
 
-    for status in timeline:
+    for mention in mentions:
       text = f"@{user.screen_name} {random.choice(answers)}"
-      idToReply = status.id
+      idToReply = mention.id
 
       try:
-        api.update_status(text, idToReply)
-        print("Posted to Crovs sz")
+        if mention.user.screen_name == user.screen.name:
+          api.update_status(text, idToReply)
+          print("Posted to Crovs sz")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
         print("Error on reply to Crovs ;(")
