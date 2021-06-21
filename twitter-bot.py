@@ -68,16 +68,15 @@ def likeEveryNewTweet(api, user):
 def trovsNewReply(api):
   while True:
     user = "916465001468170242"
-    user = api.get_user(user)
+    userInfo = api.get_user(user)
 
     mentions = api.mentions_timeline()
 
     for mention in mentions:
-      text = f"@{user.screen_name} É sobre isso!!!"
 
       try:
-        if mention.user.screen_name == user.screen_name:
-          api.update_status(text, mention.id)
+        if mention.user.screen_name == userInfo.screen_name:
+          api.update_status(f"@{userInfo.screen_name} É sobre isso!!!", mention.id)
           print("Posted to Trovs sz ;)")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
@@ -89,18 +88,15 @@ def trovsNewReply(api):
 def crovsNewReplay(api):
   while True:
     user = "972941310905774081"
-    user = api.get_user(user)
+    userInfo = api.get_user(user)
 
     mentions = api.mentions_timeline()
     answers = ["vdd linda concordo", "estamos num total de zero dias sem falar bosta, nosso recorde é de zero dias", "verdade concordo, falou tudo, essa noite você não passa frio, pois tá coberto de razão", "falou muito e falou bosta, namoral..."]
 
     for mention in mentions:
-      text = f"@{user.screen_name} {random.choice(answers)}"
-      idToReply = mention.id
-
       try:
-        if mention.user.screen_name == user.screen.name:
-          api.update_status(text, idToReply)
+        if mention.user.screen_name == userInfo.screen.name:
+          api.update_status(f"@{userInfo.screen_name} {random.choice(answers)}", mention.id)
           print("Posted to Crovs sz")
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
