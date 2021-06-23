@@ -83,16 +83,15 @@ def trovsNewReply(api):
     mentions = api.mentions_timeline()
 
     for mention in mentions:
-
       try:
-        if mention.user.screen_name == user.screen_name:
+        if mention.user.screen_name == user.screen_name and not mention.favorited:
           api.update_status(f"@{user.screen_name} É sobre isso!!!", mention.id)
           print("Posted to Trovs sz ;)")
+          mention.favorite()
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
         print("Error on reply to Trovs ;(")
         raise e
-    
     time.sleep(FIVE_MINUTES)
 
 def crovsNewReplay(api):
@@ -105,9 +104,10 @@ def crovsNewReplay(api):
 
     for mention in mentions:
       try:
-        if mention.user.screen_name == user.screen_name:
+        if mention.user.screen_name == user.screen_name and not mention.favorited:
           api.update_status(f"@{user.screen_name} {random.choice(answers)}", mention.id)
           print("Posted to Crovs sz")
+          mention.favorite()
         time.sleep(THIRTY_SECONDS)
       except Exception as e:
         print("Error on reply to Crovs ;(")
